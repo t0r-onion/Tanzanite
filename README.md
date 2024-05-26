@@ -21,8 +21,18 @@ To get started with Tanzanite, follow these steps:
    ```
 
 2. **Build Tanzanite**: Navigate to the `tanzanite-run` directory and build Tanzanite using CMake:
+ Certainly! Here's the updated build instructions for both Linux and Windows:
+
+### Linux
+
+1. **Clone the Repository**: Clone this repository to your local machine using the following command:
    ```
-   cd tanzanite-run
+   git clone https://github.com/t0r-onion/Tanzanite.git
+   ```
+
+2. **Build Tanzanite**: Navigate to the `tanzanite-run` directory and build Tanzanite using CMake:
+   ```
+   cd Tanzanite/tanzanite-run
    mkdir build && cd build
    cmake ..
    make
@@ -33,7 +43,26 @@ To get started with Tanzanite, follow these steps:
    ./tanzanite
    ```
 
-4. **Access Your Server**: Tanzanite will now be running locally. You can access it by navigating to `http://localhost:8080` in your web browser.
+### Windows
+
+1. **Clone the Repository**: Clone this repository to your local machine using the following command:
+   ```
+   git clone https://github.com/t0r-onion/Tanzanite.git
+   ```
+
+2. **Build Tanzanite**: Navigate to the `tanzanite-run` directory and build Tanzanite using CMake and MinGW:
+   ```
+   cd Tanzanite\tanzanite-run
+   mkdir build && cd build
+   cmake -G "MinGW Makefiles" ..
+   mingw32-make
+   ```
+3. **Run Tanzanite**: Once built, you can run Tanzanite with the following command:
+   ```
+   Tanzanite.exe
+   ```
+
+5. **Access Your Server**: Tanzanite will now be running locally. You can access it by navigating to `http://localhost:8080` in your web browser.
 
 ## Contributing
 
