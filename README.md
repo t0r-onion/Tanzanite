@@ -1,6 +1,6 @@
 # Tanzanite Web Server
 
-![Tanzanite Logo](tanzanite-run/assets/tanzanite.png)
+<img src="tanzanite-run/assets/tanzanite.png" alt="Tanzanite Logo" width="200">
 
 Tanzanite Web Server is a super secure and fast web server developed in C++. It is designed to efficiently serve web content while prioritizing security and speed. With Tanzanite, you can host your websites and web applications with confidence, knowing that your server is optimized for performance and robust security.
 
