@@ -11,3 +11,7 @@ include_directories(${CMAKE_SOURCE_DIR}/ext)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/tanzanite-run)
 
 add_executable(Tanzanite ${PROJECT_SOURCE_FILES} ${RESOURCE_FILES})
+
+if(WIN32)
+    target_link_libraries(Tanzanite PRIVATE ws2_32)
+endif()
