@@ -9,7 +9,7 @@
 #define SUCCESS 4
 #define FATAL   5
 
-#define COLOR_INFO    "\033[1;32m" // Green
+#define COLOR_INFO    "\033[38;5;120m" // Green
 #define COLOR_WARNING "\033[1;33m" // Yellow
 #define COLOR_ERROR   "\033[1;31m" // Red
 #define COLOR_SUCCESS "\033[1;36m" // Cyan
@@ -67,4 +67,4 @@ private:
 
 #define LOG(level) Logger(level)
 
-#endif //REDIRECTOR_LOGGER_H
+#endif
