@@ -11,7 +11,7 @@ Tanzanite Web Server is a super secure and fast web server developed in C++. It 
 - **Ease of Use**: Simple setup and configuration make Tanzanite accessible to developers of all levels.
 - **Scalability**: Tanzanite is designed to scale effortlessly as your web traffic grows, ensuring seamless performance.
 
-## Getting Started
+## Compiling Tanzanite
 
 To get started with Tanzanite, follow these steps:
 
