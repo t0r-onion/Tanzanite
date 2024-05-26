@@ -1,10 +1,6 @@
-#include <iostream>
-#include <thread>
-#include <vector>
-#include <sstream>
-#include <fstream>
-#include <cstring>
+#include "include.h"
 
+<<<<<<< Updated upstream
 #ifdef _WIN32
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -141,6 +137,8 @@ void handle_client
     CLOSESOCKET ( client_socket );
 }
 
+=======
+>>>>>>> Stashed changes
 int main ( )
 {
 #ifdef _WIN32
@@ -162,6 +160,7 @@ int main ( )
         return 1;
     }
 
+<<<<<<< Updated upstream
 #ifdef _WIN32
     const int REUSE_OPTION = SO_REUSEADDR;
 #else
@@ -207,6 +206,53 @@ int main ( )
     }
 
 #ifdef _WIN32
+=======
+    #ifdef _WIN32
+        const int REUSE_OPTION = SO_REUSEADDR;
+    #else
+        const int REUSE_OPTION = SO_REUSEADDR | SO_REUSEPORT;
+    #endif
+
+    if ( setsockopt ( server_fd , SOL_SOCKET , REUSE_OPTION , reinterpret_cast< const char* >( &opt ) , sizeof ( opt ) ) )
+    {
+        perror ( "setsockopt" );
+        CLOSESOCKET ( server_fd );
+        return 1;
+    }
+
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons ( data::PORT );
+
+    if ( bind ( server_fd , reinterpret_cast< struct sockaddr* >( &address ) , sizeof ( address ) ) < 0 )
+    {
+        perror ( "bind failed" );
+        CLOSESOCKET ( server_fd );
+        return 1;
+    }
+
+    if ( listen ( server_fd , 3 ) < 0 )
+    {
+        perror ( "listen" );
+        CLOSESOCKET ( server_fd );
+        return 1;
+    }
+
+    LOG ( INFO ) << "Tanzanite Web Server is running on port " << data::PORT;
+
+    while ( true ) {
+        if ( ( client_socket = accept ( server_fd , reinterpret_cast< struct sockaddr* >( &address ) , reinterpret_cast< socklen_t* >( &addrlen ) ) ) < 0 )
+        {
+            perror ( "accept" );
+            CLOSESOCKET ( server_fd );
+            return 1;
+        }
+
+        std::thread ( client::handle_client , client_socket ).detach ( );
+    }
+
+#ifdef _WIN32
+>>>>>>> Stashed changes
     WSACleanup ( );
 #endif
 
