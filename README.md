@@ -59,7 +59,7 @@ To get started with Tanzanite, follow these steps:
    ```
    Tanzanite.exe
    ```
-   Note: make sure the Tanzanite.exe is in the same dir as the index.html and other files that belong.
+   Note: make sure the Tanzanite binary is in the same dir as the index.html and other files that belong.
    
 5. **Access Your Server**: Tanzanite will now be running locally. You can access it by navigating to `http://localhost:8080` in your web browser.
 
