@@ -30,7 +30,7 @@ namespace client
             std::string response_body = util::read_file ( file_path , is_binary );
             if ( response_body.empty ( ) )
             {
-                response = get_error_response ( 404 , "Page Not Found" );
+                response = client::get_error_response ( 404 , "Page Not Found" );
             }
             else
             {
@@ -44,7 +44,7 @@ namespace client
         }
         else
         {
-            response = get_error_response ( 405 , "Method Not Allowed" );
+            response = client::get_error_response ( 405 , "Method Not Allowed" );
         }
 
         send ( client_socket , response.c_str ( ) , response.size ( ) , 0 );
