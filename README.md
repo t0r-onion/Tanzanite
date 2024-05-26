@@ -42,7 +42,3 @@ Contributions to Tanzanite are welcome! If you have any ideas for new features, 
 ## License
 
 Tanzanite is licensed under the [MIT License](LICENSE).
-
----
-
-Feel free to customize this README to fit your project's specific details and requirements. If you need further assistance or have any questions, don't hesitate to ask!
