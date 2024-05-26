@@ -4,13 +4,24 @@
 #include <sstream>
 #include <fstream>
 #include <cstring>
-#include <netinet/in.h>
-#include <unistd.h>
+
+#ifdef _WIN32
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#else
 #include <sys/socket.h>
-#include <algorithm>
+#include <arpa/inet.h>
+#include <unistd.h>
+#endif
 
 const int PORT = 8080;
 const int BUFFER_SIZE = 1024;
+
+#ifdef _WIN32
+#define CLOSESOCKET closesocket
+#else
+#define CLOSESOCKET close
+#endif
 
 std::string get_error_response(int status_code, const std::string& error_message) {
     std::string error_page_path = "error.html";
@@ -49,7 +60,6 @@ std::string get_error_response(int status_code, const std::string& error_message
     return error_response;
 }
 
-
 bool ends_with(const std::string& str, const std::string& suffix) {
     return str.size() >= suffix.size() &&
            str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
@@ -64,6 +74,7 @@ std::string get_mime_type(const std::string& path) {
     if (ends_with(path, ".gif")) return "image/gif";
     return "application/octet-stream";
 }
+
 std::string read_file(const std::string& file_path) {
     std::ifstream file(file_path);
     if (!file.is_open()) return "404 Not Found";
@@ -77,7 +88,7 @@ void handle_client(int client_socket) {
     char buffer[BUFFER_SIZE];
     memset(buffer, 0, BUFFER_SIZE);
 
-    read(client_socket, buffer, BUFFER_SIZE - 1);
+    recv(client_socket, buffer, BUFFER_SIZE - 1, 0);
     std::string request(buffer);
 
     std::istringstream request_stream(request);
@@ -104,11 +115,19 @@ void handle_client(int client_socket) {
         response = get_error_response(405, "Method Not Allowed");
     }
 
-    write(client_socket, response.c_str(), response.size());
-    close(client_socket);
+    send(client_socket, response.c_str(), response.size(), 0);
+    CLOSESOCKET(client_socket);
 }
 
 int main() {
+#ifdef _WIN32
+    WSADATA wsData;
+    if (WSAStartup(MAKEWORD(2, 2), &wsData) != 0) {
+        std::cerr << "WSAStartup failed\n";
+        return 1;
+    }
+#endif
+
     int server_fd, client_socket;
     struct sockaddr_in address;
     int opt = 1;
@@ -116,42 +135,53 @@ int main() {
 
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
         perror("socket failed");
-        exit(EXIT_FAILURE);
+        return 1;
     }
 
-    if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt))) {
+    #ifdef _WIN32
+        const int REUSE_OPTION = SO_REUSEADDR;
+    #else
+        const int REUSE_OPTION = SO_REUSEADDR | SO_REUSEPORT;
+    #endif
+
+    if (setsockopt(server_fd, SOL_SOCKET, REUSE_OPTION, reinterpret_cast<const char *>(&opt), sizeof(opt))) {
         perror("setsockopt");
-        close(server_fd);
-        exit(EXIT_FAILURE);
+        CLOSESOCKET(server_fd);
+        return 1;
     }
+
 
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
     address.sin_port = htons(PORT);
 
-    if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
+    if (bind(server_fd, reinterpret_cast<struct sockaddr *>(&address), sizeof(address)) < 0) {
         perror("bind failed");
-        close(server_fd);
-        exit(EXIT_FAILURE);
+        CLOSESOCKET(server_fd);
+        return 1;
     }
 
     if (listen(server_fd, 3) < 0) {
         perror("listen");
-        close(server_fd);
-        exit(EXIT_FAILURE);
+        CLOSESOCKET(server_fd);
+        return 1;
     }
 
     std::cout << "Tanzanite Server is running on port " << PORT << std::endl;
 
     while (true) {
-        if ((client_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0) {
+        if ((client_socket = accept(server_fd, reinterpret_cast<struct sockaddr *>(&address), reinterpret_cast<socklen_t *>(&addrlen))) < 0) {
             perror("accept");
-            close(server_fd);
-            exit(EXIT_FAILURE);
+            CLOSESOCKET(server_fd);
+            return 1;
         }
 
         std::thread(handle_client, client_socket).detach();
     }
+
+#ifdef _WIN32
+    WSACleanup();
+#endif
 
     return 0;
 }
