@@ -21,7 +21,6 @@ To get started with Tanzanite, follow these steps:
    ```
 
 2. **Build Tanzanite**: Navigate to the `tanzanite-run` directory and build Tanzanite using CMake:
- Certainly! Here's the updated build instructions for both Linux and Windows:
 
 ### Linux
 
