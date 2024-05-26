@@ -32,7 +32,6 @@ To get started with Tanzanite, follow these steps:
 2. **Build Tanzanite**: Navigate to the `tanzanite-run` directory and build Tanzanite using CMake:
    ```
    cd Tanzanite/tanzanite-run
-   mkdir build && cd build
    cmake ..
    make
    ```
@@ -60,7 +59,8 @@ To get started with Tanzanite, follow these steps:
    ```
    Tanzanite.exe
    ```
-
+   Note: make sure the Tanzanite.exe is in the same dir as the index.html and other files that belong.
+   
 5. **Access Your Server**: Tanzanite will now be running locally. You can access it by navigating to `http://localhost:8080` in your web browser.
 
 ## Contributing
