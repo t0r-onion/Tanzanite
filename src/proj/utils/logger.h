@@ -9,6 +9,8 @@
 #define SUCCESS 4
 #define FATAL   5
 
+#define PREFIX "Tanzanite Web"
+
 #ifdef LOGGER_USE_256RGB
 
 #define COLOR_INFO    "\033[38;5;120m" // Green
@@ -33,22 +35,22 @@ void log(int log_severity)
 {
     switch (log_severity) {
         case INFO:
-            std::cerr << COLOR_INFO << "[INFO]: ";
+            std::cerr << COLOR_SUCCESS << PREFIX << COLOR_RESET << COLOR_INFO << " | INFO >> ";
             break;
         case WARNING:
-            std::cerr << COLOR_WARNING << "[WARNING]: ";
+            std::cerr << COLOR_SUCCESS << PREFIX << COLOR_RESET << COLOR_WARNING << " |WARNING >> ";
             break;
         case ERROR:
-            std::cerr << COLOR_ERROR << "[ERROR]: ";
+            std::cerr << COLOR_SUCCESS << PREFIX << COLOR_RESET << COLOR_ERROR << " | ERROR >> ";
             break;
         case SUCCESS:
-            std::cerr << COLOR_SUCCESS << "[SUCCESS]: ";
+            std::cerr << COLOR_SUCCESS << PREFIX << COLOR_RESET << COLOR_SUCCESS << " | SUCCESS >> ";
             break;
         case FATAL:
-            std::cerr << COLOR_FATAL << "[FATAL]: ";
+            std::cerr << COLOR_SUCCESS << PREFIX << COLOR_RESET << COLOR_FATAL << " | FATAL >> ";
             break;
         default:
-            std::cerr << "[LOG]: ";
+            std::cerr << COLOR_SUCCESS << PREFIX << " | LOG >> ";
             break;
     }
 }

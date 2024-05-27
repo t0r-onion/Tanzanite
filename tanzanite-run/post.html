@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanzanite POST Request Playground</title>
+    <link rel="icon" type="image/png" href="assets/tanzanite.png">
+    <script src="js/particles.js"></script>
+    <script src="js/init_particles.js"></script>
+    <style>
+        body {
+            background-color: #11101d;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: #1f1d35;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            max-width: 80%;
+            border: 2px solid #4e6cd3; /* Outline color */
+        }
+        h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+        p {
+            font-size: 18px;
+            color: #969698;
+        }
+        .icon {
+            display: block;
+            margin: 0 auto 20px;
+            width: 100px; /* Adjust the width as needed */
+        }
+        #particles-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        #postForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #postData {
+            margin-bottom: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #4e6cd3;
+        }
+        button[type="submit"] {
+            padding: 10px 20px;
+            border: none;
+            background-color: #4e6cd3;
+            color: #ffffff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button[type="submit"]:hover {
+            background-color: #3a4d99;
+        }
+    </style>
+</head>
+<body>
+
+<div id="particles-container"></div>
+
+<div class="container">
+    <img class="icon" src="assets/tanzanite.png" alt="Tanzanite Icon">
+    
+    <form id="postForm">
+        <h1>POST Request Data:</h1><br>
+        <input type="text" id="postData" name="postData"><br><br>
+        <button type="submit">Send POST Request</button>
+    </form>
+</div>
+
+<script>
+    initializeParticles();
+    document.getElementById("postForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Get input data
+        var postData = document.getElementById("postData").value;
+
+        // Create XHR object
+        var xhr = new XMLHttpRequest();
+
+        // Configure POST request
+        xhr.open("POST", "http://localhost:8080", true);
+        xhr.setRequestHeader("Content-Type", "text/plain");
+
+        // Send POST request with data
+        xhr.send(postData);
+
+        // Handle response
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                console.log("Response from server:", xhr.responseText);
+                alert("POST request successful!");
+            } else {
+                console.error("Error:", xhr.statusText);
+                alert("POST request failed! Error: " + xhr.statusText);
+            }
+        };
+    });
+</script>
+
+</body>
+</html>

@@ -1,6 +1,5 @@
 #include "inc.h"
 
-
 void handle_client
         ( int client_socket )
 {
@@ -18,6 +17,8 @@ void handle_client
     std::string response;
     if ( method == "GET" )
     {
+        LOG(INFO) << "Received GET Request.";
+
         std::string file_path = "." + path;
         if ( file_path == "./" ) file_path = "./index.html";
         bool is_binary = ends_with ( file_path , ".png" ) || ends_with ( file_path , ".jpg" ) || ends_with ( file_path , ".gif" );
@@ -36,10 +37,45 @@ void handle_client
                                                    "Content-Length: " + std::to_string ( response_body.size ( ) ) + "\r\n"
                                                                                                                     "\r\n" + response_body;
         }
+        LOG(INFO) << "Served GET Request.";
+    }
+    else if (method == "POST")
+    {
+        LOG(INFO) << "Received POST Request.";
+
+        std::string request_body;
+        size_t content_length = 0;
+        std::string line;
+
+        while (std::getline(request_stream, line) && !line.empty())
+        {
+            if (line.substr(0, 15) == "Content-Length: ")
+            {
+                content_length = std::stoul(line.substr(15));
+            }
+        }
+
+        if (content_length > 0)
+        {
+            std::vector<char> buffer(content_length, 0);
+
+            request_stream.read(buffer.data(), content_length);
+            request_body = std::string(buffer.data(), content_length);
+        }
+
+        std::string response_body = "Received POST data: " + request_body;
+
+        response =
+                "HTTP/1.1 200 OK\r\n"
+                "Content-Type: text/plain\r\n"
+                "Content-Length: " + std::to_string(response_body.size()) + "\r\n"
+                                                                            "\r\n" + response_body;
+
+        LOG(INFO) << "Served POST Request.";
     }
     else
     {
-        response = get_error_response ( 405 , "Method Not Allowed" );
+        response = get_error_response(405, "Method Not Allowed");
     }
 
     send ( client_socket , response.c_str ( ) , response.size ( ) , 0 );
