@@ -63,6 +63,9 @@ To get started with Tanzanite, follow these steps:
    
 5. **Access Your Server**: Tanzanite will now be running locally. You can access it by navigating to `http://localhost:8080` in your web browser.
 
+## Sorry for:
+I sincerely apoligize for the unclean code it will be cleaned up in the future as this was a hobby project that I did not care much about until I was encouraged to publish it.
+
 ## Contributing
 
 Contributions to Tanzanite are welcome! If you have any ideas for new features, bug fixes, or improvements, feel free to open an issue or submit a pull request.
